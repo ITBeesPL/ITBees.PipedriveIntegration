@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ITBees.Fas.Setup" Version="8.0.5" />
+    <PackageReference Include="ITBees.Interfaces" Version="8.0.20" />
+    <PackageReference Include="ITBees.Models" Version="8.0.45" />
+    <PackageReference Include="ITBees.RestfulApiControllers" Version="8.0.21" />
+  </ItemGroup>
+
+</Project>
