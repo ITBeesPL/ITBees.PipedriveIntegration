@@ -1,8 +1,8 @@
-﻿using ITBees.PipedriveIntegration.Controllers;
+﻿using ITBees.Interfaces.ExternalSalesPlatformIntegration.Models;
 
 namespace ITBees.PipedriveIntegration.Interfaces;
 
 public interface INewPipedriveLeadService
 {
-    NewPipedriveLeadCreateResultVm Create(NewPipedriveLeadIm newPipedriveLeadIm);
+    Task<NewLeadCreateResultVm> Create(NewLeadIm newLeadIm);
 }

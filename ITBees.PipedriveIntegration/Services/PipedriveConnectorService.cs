@@ -2,11 +2,13 @@
 using ITBees.PipedriveIntegration.Models;
 using Newtonsoft.Json;
 using System.Text;
+using ITBees.Interfaces.ExternalSalesPlatformIntegration;
+using ITBees.Interfaces.ExternalSalesPlatformIntegration.Models;
 using ITBees.PipedriveIntegration.Interfaces;
 
 namespace ITBees.PipedriveIntegration.Services;
 
-public class PipedriveConnectorService : IPipedriveConnectorService
+public class PipedriveConnectorService : IPipedriveConnectorService, INewPipedriveLeadService, INewExternalSalesPlatformIntegrationService
 {
     private readonly IPlatformSettingsService _platformSettingsService;
     private readonly string apiUrl;
@@ -65,22 +67,80 @@ public class PipedriveConnectorService : IPipedriveConnectorService
             }
         }
     }
-
-    public async Task<LeadResponse> AddNewLead(string leadTitle, string note)
+    public async Task<PipedriveResponse<PersonData>> CreatePerson(string name, string email, string phone)
     {
-        
+        using (HttpClient client = new HttpClient())
+        {
+            string personApiUrl = $"{apiUrl}/persons";
+            string requestUrl = $"{personApiUrl}?api_token={apiToken}";
+
+            var newPerson = new PersonRequest
+            {
+                Name = name,
+                Email = new List<EmailField>
+                {
+                    new EmailField { Label = "email", Value = email, Primary = true }
+                },
+                Phone = new List<PhoneField>
+                {
+                    new PhoneField { Label = "tel", Value = phone, Primary = true }
+                }
+            };
+
+            string jsonPerson = JsonConvert.SerializeObject(newPerson);
+            StringContent content = new StringContent(jsonPerson, Encoding.UTF8, "application/json");
+
+            try
+            {
+                HttpResponseMessage response = await client.PostAsync(requestUrl, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseBody = await response.Content.ReadAsStringAsync();
+
+                    var personResponse = JsonConvert.DeserializeObject<PipedriveResponse<PersonData>>(responseBody);
+                    if (personResponse.Success)
+                    {
+                        return personResponse;
+                    }
+                    else
+                    {
+                        throw new Exception($"Could not create person in pipedrive Api");
+                    }
+                }
+                else
+                {
+                    throw new Exception($"Could not create person in pipedrive Api");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Could not create person in pipedrive Api ex message : {ex.Message}"); ;
+            }
+        }
+    }
+
+    public async Task<NewLeadCreateResultVm> Create(NewLeadIm newLeadIm)
+    {
+
         if (personId == 0)
         {
             var first = (await GetUsers()).First();
             personId = first.Id;
         }
 
+        var createdPerson = await CreatePerson(newLeadIm.Name, newLeadIm.Email, newLeadIm.Phone);
+
         var leadRequest = new LeadRequest
         {
-            Title = leadTitle,
+            Title = $"{newLeadIm.Campaign} {newLeadIm.Name}",
             PersonId = personId,
             OrganizationId = organizationId,
-            Note = note
+            Note = newLeadIm.Note,
+            Label = newLeadIm.Label,
+            Phone = newLeadIm.Phone,
+            Source_name = newLeadIm.SourceUrl,
+            Email = newLeadIm.Email,
         };
 
         using (HttpClient client = new HttpClient())
@@ -102,7 +162,7 @@ public class PipedriveConnectorService : IPipedriveConnectorService
 
                     if (leadResponse.Success)
                     {
-                        return leadResponse;
+                        return new NewLeadCreateResultVm() { Success = true };
                     }
                     else
                     {
@@ -111,7 +171,7 @@ public class PipedriveConnectorService : IPipedriveConnectorService
                 }
                 else
                 {
-                    throw new Exception($"Unable to create new lead {response.StatusCode}, {response.ReasonPhrase}");
+                    return new NewLeadCreateResultVm() { Success = false, Message = $"Unable to create new lead {response.StatusCode}, {response.ReasonPhrase}" };
                 }
             }
             catch (Exception ex)
@@ -120,5 +180,4 @@ public class PipedriveConnectorService : IPipedriveConnectorService
             }
         }
     }
-
 }

@@ -1,4 +1,5 @@
-﻿using ITBees.PipedriveIntegration.Interfaces;
+﻿using ITBees.Interfaces.ExternalSalesPlatformIntegration.Models;
+using ITBees.PipedriveIntegration.Interfaces;
 using ITBees.RestfulApiControllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,8 +16,9 @@ public class NewPipedriveLeadController : RestfulControllerBase<NewPipedriveLead
         _newPipedriveLeadService = newPipedriveLeadService;
     }
 
-    public IActionResult Post([FromBody] NewPipedriveLeadIm newPipedriveLeadIm)
+    [HttpPost]
+    public async Task<IActionResult> Post([FromBody] NewLeadIm newLeadIm)
     {
-        return ReturnOkResult(()=>_newPipedriveLeadService.Create(newPipedriveLeadIm));
+        return await ReturnOkResultAsync(() => _newPipedriveLeadService.Create(newLeadIm));
     }
 }
