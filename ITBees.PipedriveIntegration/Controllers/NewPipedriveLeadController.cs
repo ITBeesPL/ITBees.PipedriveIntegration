@@ -19,6 +19,6 @@ public class NewPipedriveLeadController : RestfulControllerBase<NewPipedriveLead
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] NewLeadIm newLeadIm)
     {
-        return await ReturnOkResultAsync(() => _newPipedriveLeadService.Create(newLeadIm));
+        return await ReturnOkResultAsync(() => _newPipedriveLeadService.CreateLead(newLeadIm));
     }
 }

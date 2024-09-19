@@ -1,6 +1,7 @@
-﻿namespace ITBees.PipedriveIntegration.Models;
+﻿
+namespace ITBees.PipedriveIntegration.Models;
 
-public class User
+public class Owner
 {
     public int Id { get; set; }
     public string Name { get; set; }
@@ -8,4 +9,5 @@ public class User
     public int HasPic { get; set; }
     public string PicHash { get; set; }
     public bool ActiveFlag { get; set; }
+    public int Value { get; set; }
 }

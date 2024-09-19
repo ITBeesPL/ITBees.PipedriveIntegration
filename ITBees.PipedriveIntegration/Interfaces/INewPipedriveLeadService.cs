@@ -4,5 +4,5 @@ namespace ITBees.PipedriveIntegration.Interfaces;
 
 public interface INewPipedriveLeadService
 {
-    Task<NewLeadCreateResultVm> Create(NewLeadIm newLeadIm);
+    Task<NewLeadCreateResultVm> CreateLead(NewLeadIm newLeadIm);
 }

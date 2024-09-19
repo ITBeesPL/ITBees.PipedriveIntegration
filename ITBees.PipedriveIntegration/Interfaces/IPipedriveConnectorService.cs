@@ -4,5 +4,5 @@ namespace ITBees.PipedriveIntegration.Interfaces;
 
 public interface IPipedriveConnectorService
 {
-    Task<List<User>> GetUsers();
+    Task<List<Person>> GetUsers();
 }
