@@ -14,4 +14,10 @@
     <PackageReference Include="ITBees.Interfaces" Version="8.0.40" />
   </ItemGroup>
 
+<!--  <ItemGroup>-->
+<!--    <ProjectReference Include="..\..\ITBees.FAS.Setup\ITBees.FAS.Setup\ITBees.FAS.Setup.csproj" />-->
+<!--    <ProjectReference Include="..\..\ITBees.Interfaces\ITBees.Interfaces\ITBees.Interfaces.csproj" />-->
+<!--    <ProjectReference Include="..\..\ITBees.RestfulApiControllers\ITBees.RestfulApiControllers\ITBees.RestfulApiControllers.csproj" />-->
+<!--  </ItemGroup>-->
+
 </Project>
