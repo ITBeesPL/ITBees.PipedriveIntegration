@@ -11,7 +11,7 @@ namespace ITBees.PipedriveIntegration
 {
     public class PipedriveIntegrationSetup : IFasDependencyRegistrationWithGenerics
     {
-        public void Register<TContext, TIdentityUser>(IServiceCollection services, IConfigurationRoot configurationRoot) where TContext : DbContext where TIdentityUser : IdentityUser, new()
+        public void Register<TContext, TIdentityUser>(IServiceCollection services, IConfigurationRoot configurationRoot) where TContext : DbContext where TIdentityUser : IdentityUser<Guid>, new()
         {
             services.AddScoped<IPipedriveConnectorService, PipedriveConnectorService>();
             services.AddScoped<INewPipedriveLeadService, PipedriveConnectorService>();
