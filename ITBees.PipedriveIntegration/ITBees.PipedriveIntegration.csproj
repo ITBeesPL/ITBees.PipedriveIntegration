@@ -12,6 +12,7 @@
     <PackageReference Include="ITBees.Models" Version="8.0.85" />
     <PackageReference Include="ITBees.RestfulApiControllers" Version="8.0.25" />
     <PackageReference Include="ITBees.Interfaces" Version="8.0.62" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
 <!--  <ItemGroup>-->
